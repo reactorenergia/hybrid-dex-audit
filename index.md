@@ -1,4 +1,4 @@
-# Technical Product Management Audit Report
+# Technical Product Audit Report
 
 **Date:** December 15, 2025
 
@@ -15,17 +15,17 @@ Based on checking the UI in this project, what improvements would you suggest to
 
 Based on the file structure, the **frontend** reflects a modern and robust product **vision**
 
-### Strengths
-* **Modern Architecture:** The use of **React** (`.tsx`), **Vite**, and **TypeScript** indicates a solid, maintainable, and scalable foundation.
-* **Clear UI Components:** `src/components/ui` (`chart.tsx`, `table.tsx`, `card.tsx`) suggests a modular interface focused on data visualization, nice
-* **Logical Flow:** The routes (`dashboard`, `markets`, `trading`, `wallet`) cover the standard UX for a trading platform
-
 ### ⚠️ Ambiguities & Areas for Improvement
 * **"Decentralization" ** There is friction between the backend (`server/`) and the contracts (`contracts/`).
     * `TradingController.js` points to off-chain logic.
     * It appears to be a model where the order book is centralized
     * *UX Impact:* The use of traditional `Login.tsx` vs. `Connect Wallet` may erode Web3 users trust
     * The presence of a traditional JWT-based authentication system, with /login and /register endpoints (server/routes/auth.js), confirms that the user model deviates from the 'Connect Wallet' (dApp experience), creating friction with the decentralization narrative
+
+### Strengths
+* **Modern Architecture:** The use of **React** (`.tsx`), **Vite**, and **TypeScript** indicates a solid, maintainable, and scalable foundation.
+* **Clear UI Components:** `src/components/ui` (`chart.tsx`, `table.tsx`, `card.tsx`) suggests a modular interface focused on data visualization, nice
+* **Logical Flow:** The routes (`dashboard`, `markets`, `trading`, `wallet`) cover the standard UX for a trading platform
 
 ---
 
@@ -35,7 +35,7 @@ Based on the file structure, the **frontend** reflects a modern and robust produ
 
 **Usability Improvements:**
 * **Favorites:** Implement `toggle.tsx` to bookmark pairs.
-* **Sparklines:** Use `chart.tsx` to display mini trend charts (24h) within the table.
+* Use the existing `chart.tsx` to display mini trend charts (24h) directly within the table rows for quicker decision-making.
 * **Quick Actions:** "Trade" buttons on mouse hover
 
 ### `History.tsx`
@@ -55,16 +55,21 @@ Based on the file structure, the **frontend** reflects a modern and robust produ
 ### ⛓️ Blockchain Protocols
 Given the use of Solidity (`.sol`), I recommend the following EVM networks:
 
-* **Avalanche C-chain**. It  offers high volume and EVM security with low costs and high speed.
+* **Avalanche C-chain**. Offers high volume and EVM security with low costs and high speed.
 
 AND
 
 * **Ethereum Mainnet:** Due to the recent Fusaka upgrade, transaction costs are lower, making mainnet an excellent environment to showcase and validate a system like this.
 
-### 🏗️ Contract Structure
+### Contract Structure
 * **`LumenToken.sol`:** Should implement **EIP-2612** for gasless approvals
 * **`Governance.sol`:** OpenZeppelin *Governor* style for voting on protocol changes.
 
+## 4. Cibersecurity
+
+### 🚨
+* **Authentication Bypass Risk (`jws`):** The dependency scan detected a critical vulnerability in the `jws` library. It improperly verifies signatures, potentially allowing attackers to forge tokens and impersonate any user (Account Takeover)
+
 ### 🪙 Tokenomics (LumenToken)
-* **Utility:** Governance and trading fee discounts
+* **Utility:** Implement governance and trading fee discounts for holders
 * **Deflation:** Implement a **Buy-Back & Burn** mechanism using a % of exchange fees.
